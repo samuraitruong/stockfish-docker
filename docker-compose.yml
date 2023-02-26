@@ -6,6 +6,7 @@ services:
       dockerfile: Dockerfile
       args:
         VERSION: 15.1
+    image: stockfish-api
     volumes:
       - ./api:/app/api
     ports:

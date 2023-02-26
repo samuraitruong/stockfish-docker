@@ -1,4 +1,4 @@
-FROM node:18-buster as builder
+FROM node:18-buster-slim as builder
 ARG VERSION=15.1
 
 WORKDIR /chess
@@ -14,13 +14,13 @@ WORKDIR /chess/Stockfish-sf_$VERSION/src
 RUN make net && make build ARCH=x86-64-modern
 
 
-FROM node:18-buster
+FROM node:18-buster-slim
 ARG NODE_VERSION=16
 ARG VERSION=15.1
 WORKDIR /app
 COPY --from=builder /chess/Stockfish-sf_$VERSION/src/stockfish ./stockfish
 ENV STOCKFISH_PATH=/app/stockfish
-
+ENV STOCKFISH_VERSION=${VERSION}
 WORKDIR /app/api
 
 COPY ./api /app/api

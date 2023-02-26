@@ -60,7 +60,7 @@ jobs:
           region: ${{ env.REGION }}
           # NOTE: If using a pre-built image, update the image name here
           image: ${{ env.GAR_LOCATION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}
-          flags: '--allow-unauthenticated'
+          flags: '--allow-unauthenticated --cpu=2 --memory=1Gi'
           # NOTE: You can also set env variables here:
           #  env_vars: |
           #  NODE_ENV=production

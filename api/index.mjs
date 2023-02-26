@@ -3,7 +3,13 @@ import { Engine } from "node-uci";
 const app = fastify({ logger: true });
 
 app.get("/", async (request, reply) => {
-  return { ok: true };
+  //   const engine = new Engine(process.env.STOCKFISH_PATH || "stockfish");
+  //   await engine.init();
+  //   await engine.setoption("MultiPV", "4");
+  //   await engine.isready();
+  //   // console.log("engine ready", engine.id, engine.options);
+  //   await engine.quit();
+  return { ready: true, stockfish_version: process.env.STOCKFISH_VERSION };
 });
 
 app.get("/bestmove", async (request, reply) => {
