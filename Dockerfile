@@ -1,4 +1,4 @@
-FROM ubuntu as builder
+FROM node:18-buster as builder
 ARG VERSION=15.1
 
 WORKDIR /chess
@@ -14,19 +14,12 @@ WORKDIR /chess/Stockfish-sf_$VERSION/src
 RUN make net && make build ARCH=x86-64-modern
 
 
-FROM ubuntu
+FROM node:18-buster
 ARG NODE_VERSION=16
 ARG VERSION=15.1
 WORKDIR /app
 COPY --from=builder /chess/Stockfish-sf_$VERSION/src/stockfish ./stockfish
 ENV STOCKFISH_PATH=/app/stockfish
-
-
-RUN apt-get update -y && \
-    apt-get upgrade -y && \
-    apt-get install -y curl gnupg && \
-    curl -sL https://deb.nodesource.com/setup_$NODE_VERSION.x | bash - && \
-    apt-get install -y nodejs
 
 WORKDIR /app/api
 
