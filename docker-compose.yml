@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+  stockfish-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VERSION: 15.1
+    volumes:
+      - ./api:/app/api
+    ports:
+      - 3000:3000
+    entrypoint:
+      - npm
+      - run
+      - dev
+
