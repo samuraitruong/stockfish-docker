@@ -16,51 +16,39 @@ app.get("/bestmove", async (request, reply) => {
   const engine = new Engine(process.env.STOCKFISH_PATH || "stockfish");
   await engine.init();
   await engine.setoption("MultiPV", "4");
+  await engine.setoption("UCI_Elo", "4");
   await engine.isready();
   // console.log("engine ready", engine.id, engine.options);
   if (request.query.fen) {
     console.log("FEN", request.query.fen);
     await engine.position(request.query.fen);
   }
-  const result = await engine.go({ nodes: 2500000 });
+  const result = await engine.go({ nodes: 2500000, ...request.query });
   //console.log("result", result);
   await engine.quit();
   return { result };
 });
 
-app.get("/bestmove1", async (request, reply) => {
+//  get move with limit by elo and depth
+app.get("/bestmove/:elo", async (request, reply) => {
+  const { elo } = request.params;
   const engine = new Engine(process.env.STOCKFISH_PATH || "stockfish");
   await engine.init();
   await engine.setoption("MultiPV", "4");
+  await engine.setoption("UCI_LimitStrength", "true");
+  await engine.setoption("UCI_Elo", elo);
+
   await engine.isready();
   // console.log("engine ready", engine.id, engine.options);
   if (request.query.fen) {
     console.log("FEN", request.query.fen);
     await engine.position(request.query.fen);
   }
-  const result = await engine.go({ nodes: 10000 });
+  const result = await engine.go({ depth: 14, ...request.query });
   //console.log("result", result);
   await engine.quit();
   return { result };
 });
-
-app.get("/bestmove2", async (request, reply) => {
-  const engine = new Engine(process.env.STOCKFISH_PATH || "stockfish");
-  await engine.init();
-  await engine.setoption("MultiPV", "4");
-  await engine.isready();
-  // console.log("engine ready", engine.id, engine.options);
-  if (request.query.fen) {
-    console.log("FEN", request.query.fen);
-    await engine.position(request.query.fen);
-  }
-  const result = await engine.go({ depth: 20 });
-  //console.log("result", result);
-  await engine.quit();
-  return { result };
-});
-
-
 
 const start = async () => {
   const port = process.env.PORT || 3000;
