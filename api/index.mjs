@@ -28,6 +28,23 @@ app.get("/bestmove", async (request, reply) => {
   return { result };
 });
 
+app.get("/bestmove1", async (request, reply) => {
+  const engine = new Engine(process.env.STOCKFISH_PATH || "stockfish");
+  await engine.init();
+  await engine.setoption("MultiPV", "4");
+  await engine.isready();
+  // console.log("engine ready", engine.id, engine.options);
+  if (request.query.fen) {
+    console.log("FEN", request.query.fen);
+    await engine.position(request.query.fen);
+  }
+  const result = await engine.go({ nodes: 10000 });
+  //console.log("result", result);
+  await engine.quit();
+  return { result };
+});
+
+
 const start = async () => {
   const port = process.env.PORT || 3000;
   try {
