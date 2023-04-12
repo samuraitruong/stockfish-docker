@@ -27,7 +27,12 @@ After the API runs, you can access using the following URL
 
 ```
 curl http://localhost:3000/bestmove?fen=rnbqkbnr/pp1ppppp/8/2p5/4P3/5N2/PPPP1PPP/RNBQKB1R%20b%20KQkq%20-%201%202 | jq .
+
+or 
+
+curl http://localhost:3000/bestmove?fen=K1k5/P1Pp4/1p1P4/8/p7/P2P4/8/8 w - - 0 1&depth=18 | jq .
 ```
+
 
 The API default will run on 3000, the container exposes 2 ports `3000` and `8080`
 

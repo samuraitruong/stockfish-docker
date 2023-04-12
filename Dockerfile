@@ -19,6 +19,7 @@ ARG NODE_VERSION=16
 ARG VERSION=15.1
 WORKDIR /app
 COPY --from=builder /chess/Stockfish-sf_$VERSION/src/stockfish ./stockfish
+ENV NODE_ENV=production
 ENV STOCKFISH_PATH=/app/stockfish
 ENV STOCKFISH_VERSION=${VERSION}
 WORKDIR /app/api
