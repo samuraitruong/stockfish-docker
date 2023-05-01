@@ -44,7 +44,7 @@ async function getBestMove(fen, options = {}, goOptions = { depth: 18 }) {
     // if (a.score?.multipv === b.score?.multipv) {
     //   return b.score?.value - a.score?.value;
     // }
-    return b.score?.score - a.score?.score;
+    return b.score?.value - a.score?.value;
   });
   return { result };
 }
