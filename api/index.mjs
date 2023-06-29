@@ -46,7 +46,7 @@ async function getBestMove(fen, options = {}, goOptions = { depth: 18 }) {
     // }
     return b.score?.value - a.score?.value;
   });
-  return { result };
+  return { result, fen };
 }
 
 app.get("/", async (request, reply) => {
