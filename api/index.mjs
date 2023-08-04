@@ -37,8 +37,6 @@ async function getBestMove(fen, options = {}, goOptions = { depth: 18 }) {
 
   const result = await engine.go(executeOptions);
   await engine.quit();
-  // sort by score
-  // return result;
 
   result.info.sort((a, b) => {
     // if (a.score?.multipv === b.score?.multipv) {
@@ -46,7 +44,11 @@ async function getBestMove(fen, options = {}, goOptions = { depth: 18 }) {
     // }
     return b.score?.value - a.score?.value;
   });
-  return { result, fen };
+  return {
+    result,
+    fen,
+    info: { stockfish_version: process.env.STOCKFISH_VERSION },
+  };
 }
 
 app.get("/", async (request, reply) => {
