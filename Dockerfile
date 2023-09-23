@@ -25,8 +25,8 @@ ENV STOCKFISH_VERSION=${VERSION}
 WORKDIR /app/api
 
 COPY ./api /app/api
-
-RUN npm install
+RUN npm install -g pnpm
+RUN pnpm install
 EXPOSE 3000
 EXPOSE 8080
 ENTRYPOINT [ "npm", "start" ]
