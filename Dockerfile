@@ -15,8 +15,8 @@ RUN make net && make build ARCH=$BUILD_PROFILE
 
 
 FROM node:18-buster-slim
-ARG NODE_VERSION=16
-ARG VERSION=15.1
+ARG NODE_VERSION=18
+ARG VERSION=16
 WORKDIR /app
 COPY --from=builder /chess/Stockfish-sf_$VERSION/src/stockfish ./stockfish
 ENV NODE_ENV=production
