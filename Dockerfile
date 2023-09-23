@@ -1,6 +1,6 @@
 FROM node:18-buster-slim as builder
-ARG VERSION=15.1
-
+ARG VERSION=16.0
+ARG BUILD_PROFILE=x86-64-avx2
 WORKDIR /chess
 
 RUN  apt-get update \
@@ -11,7 +11,7 @@ RUN wget "https://github.com/official-stockfish/Stockfish/archive/refs/tags/sf_$
 
 
 WORKDIR /chess/Stockfish-sf_$VERSION/src
-RUN make net && make build ARCH=x86-64-modern
+RUN make net && make build ARCH=$BUILD_PROFILE
 
 
 FROM node:18-buster-slim

@@ -1,11 +1,14 @@
 version: "3.9"
 services:
   stockfish-api:
+    # if apple chip, uncommented below
+    platform:  linux/arm64/v8
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        VERSION: 15.1
+        VERSION: 16
+        BUILD_PROFILE: armv8
     image: stockfish-api
     volumes:
       - ./api:/app/api

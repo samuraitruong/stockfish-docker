@@ -23,11 +23,9 @@ const app = fastify({
 async function getBestMove(fen, options = {}, goOptions = { depth: 18 }) {
   const engine = new Engine(process.env.STOCKFISH_PATH || "stockfish");
   await engine.init();
-
   for await (const [key, value] of Object.entries(options)) {
     await engine.setoption(key, `${value}`);
   }
-
   await engine.isready();
   if (fen) {
     app.log.info("FEN", fen);
@@ -52,15 +50,28 @@ async function getBestMove(fen, options = {}, goOptions = { depth: 18 }) {
 }
 
 app.get("/", async (request, reply) => {
-  return { ready: true, stockfish_version: process.env.STOCKFISH_VERSION };
+  const engine = new Engine(process.env.STOCKFISH_PATH || "stockfish");
+  await engine.init();
+  const e = await engine.sendCmd("uci");
+
+  engine.quit();
+  return { ready: e != null, stockfish_version: process.env.STOCKFISH_VERSION };
 });
 
 app.get("/bestmove", async (request, reply) => {
-  return await getBestMove(
+  reply.header("x-stockfish-fen", request.query.fen);
+  reply.header("x-stockfish-multipv", 4);
+  reply.header("x-stockfish-threads", 4);
+  const start = Date.now();
+
+  const res = await getBestMove(
     request.query.fen,
-    { MultiPV: 4 },
+    { MultiPV: 1, Threads: 8 },
     { depth: 18, ...request.query }
   );
+  const total = Date.now() - start;
+  reply.header("x-stockfish-time", total);
+  return res;
 });
 
 // get bestmove but restricted elo
