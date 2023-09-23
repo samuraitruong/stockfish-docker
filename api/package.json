@@ -1,8 +1,8 @@
 {
   "name": "stockfish-api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "The wrapper docker container to have stockfish engine running as API",
+  "main": "index.mjs",
   "type": "module",
   "scripts": {
     "dev": "nodemon --experimental-modules index.mjs",
@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fastify/cors": "^8.4.0",
     "fastify": "^4.23.2",
     "node-uci": "^1.3.4",
     "nodemon": "^2.0.20",

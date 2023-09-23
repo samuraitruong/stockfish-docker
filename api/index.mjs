@@ -1,4 +1,6 @@
+/* eslint-disable no-undef */
 import fastify from "fastify";
+import cors from "@fastify/cors";
 import { Engine } from "node-uci";
 
 const envToLogger = {
@@ -20,6 +22,7 @@ const app = fastify({
   logger: envToLogger[process.env.NODE_ENV || "development"],
 });
 
+app.register(cors, {});
 async function getBestMove(fen, options = {}, goOptions = { depth: 18 }) {
   const engine = new Engine(process.env.STOCKFISH_PATH || "stockfish");
   await engine.init();
