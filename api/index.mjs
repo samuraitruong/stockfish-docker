@@ -23,6 +23,7 @@ const app = fastify({
 });
 
 app.register(cors, {});
+
 async function getBestMove(fen, options = {}, goOptions = { depth: 18 }) {
   const engine = new Engine(process.env.STOCKFISH_PATH || "stockfish");
   await engine.init();
@@ -55,16 +56,17 @@ async function getBestMove(fen, options = {}, goOptions = { depth: 18 }) {
 app.get("/", async (request, reply) => {
   const engine = new Engine(process.env.STOCKFISH_PATH || "stockfish");
   await engine.init();
-  const e = await engine.sendCmd("uci");
+  await engine.sendCmd("uci");
 
   engine.quit();
-  return { ready: e != null, stockfish_version: process.env.STOCKFISH_VERSION };
+  return { ready: true, stockfish_version: process.env.STOCKFISH_VERSION };
 });
 
 app.get("/bestmove", async (request, reply) => {
   reply.header("x-stockfish-fen", request.query.fen);
-  reply.header("x-stockfish-multipv", 4);
+  reply.header("x-stockfish-multipv", 1);
   reply.header("x-stockfish-threads", 4);
+  reply.header("x-stockfish-version", process.env.STOCKFISH_VERSION);
   const start = Date.now();
 
   const res = await getBestMove(
