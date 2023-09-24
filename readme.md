@@ -13,6 +13,10 @@ The stockfish executable is added to PATH as STOCKFISH_PATH
 
 ### Local development
 
+Note: We are using bun runtime so please have bun install. Docker will have it install automatically
+
+Please refer to https://bun.sh/docs/installation
+
 ```
 cd api
 STOCKFISH_PATH=path/to/stockfish npm run dev

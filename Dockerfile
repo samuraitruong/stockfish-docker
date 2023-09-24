@@ -22,11 +22,13 @@ COPY --from=builder /chess/Stockfish-sf_$VERSION/src/stockfish ./stockfish
 ENV NODE_ENV=production
 ENV STOCKFISH_PATH=/app/stockfish
 ENV STOCKFISH_VERSION=${VERSION}
+
+RUN npm install -g bun
+
 WORKDIR /app/api
 
 COPY ./api /app/api
-RUN npm install -g pnpm
-RUN pnpm install
+RUN bun install
 EXPOSE 3000
 EXPOSE 8080
-ENTRYPOINT [ "npm", "start" ]
+ENTRYPOINT [ "bun", "run", "index.ts" ]

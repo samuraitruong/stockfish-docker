@@ -5,8 +5,8 @@
   "main": "index.mjs",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --experimental-modules index.mjs",
-    "start": "node index.mjs"
+    "dev": "bun run --watch index.ts",
+    "start": "bun run index.ts"
   },
   "keywords": [],
   "author": "",

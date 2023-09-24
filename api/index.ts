@@ -1,7 +1,22 @@
 /* eslint-disable no-undef */
-import fastify from "fastify";
+import fastify, { FastifyInstance } from "fastify";
 import cors from "@fastify/cors";
 import { Engine } from "node-uci";
+
+interface GoOptions {
+  depth: number;
+  // Add other properties as needed
+}
+
+interface Info {
+  stockfish_version: string;
+  // Add other properties as needed
+}
+
+interface Result {
+  info: any[]; // Replace with a more specific type if possible
+  // Add other properties as needed
+}
 
 const envToLogger = {
   development: {
@@ -18,13 +33,19 @@ const envToLogger = {
   test: false,
 };
 
-const app = fastify({
+const app: FastifyInstance = fastify({
   logger: envToLogger[process.env.NODE_ENV || "development"],
 });
 
-app.register(cors, {});
+const corsOptions = {};
 
-async function getBestMove(fen, options = {}, goOptions = { depth: 18 }) {
+app.register(cors, corsOptions);
+
+async function getBestMove(
+  fen: string,
+  options: Record<string, any> = {},
+  goOptions: GoOptions = { depth: 18 }
+) {
   const engine = new Engine(process.env.STOCKFISH_PATH || "stockfish");
   await engine.init();
   for await (const [key, value] of Object.entries(options)) {
@@ -40,7 +61,7 @@ async function getBestMove(fen, options = {}, goOptions = { depth: 18 }) {
   const result = await engine.go(executeOptions);
   await engine.quit();
 
-  result.info.sort((a, b) => {
+  result.info.sort((a: any, b: any) => {
     // if (a.score?.multipv === b.score?.multipv) {
     //   return b.score?.value - a.score?.value;
     // }
@@ -94,7 +115,7 @@ const start = async () => {
   const port = process.env.PORT || 3000;
   try {
     await app.listen({ port, host: "0.0.0.0" });
-    console.log("Stockfish API Server started at: " + port);
+    console.log("Stockfish API Server started at: %", port);
   } catch (err) {
     app.log.error(err);
     process.exit(1);
