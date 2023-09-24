@@ -115,7 +115,7 @@ const start = async () => {
   const port = process.env.PORT || 3000;
   try {
     await app.listen({ port, host: "0.0.0.0" });
-    console.log("Stockfish API Server started at: %", port);
+    console.log("Bun Stockfish API Server started at: %", port);
   } catch (err) {
     app.log.error(err);
     process.exit(1);
