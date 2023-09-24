@@ -37,6 +37,11 @@ const app: FastifyInstance = fastify({
   logger: envToLogger[process.env.NODE_ENV || "development"],
 });
 
+app.setErrorHandler(function (error, request, reply) {
+  this.log.error(error);
+  reply.status(500).send({ error: error.message || "Internal server error" });
+});
+
 const corsOptions = {};
 
 app.register(cors, corsOptions);
