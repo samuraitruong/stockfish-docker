@@ -15,7 +15,7 @@ jobs:
       packages: write
     strategy:
       matrix:
-        version: [15.1, 14.1, 16]
+        version: [15.1, 14.1, 16, 17]
 
     runs-on: ubuntu-latest
 
